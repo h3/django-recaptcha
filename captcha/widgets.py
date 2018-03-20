@@ -1,6 +1,5 @@
 import json
 
-import django
 from django import forms
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -21,17 +20,6 @@ class ReCaptcha(forms.widgets.Widget):
         return [
             data.get(self.recaptcha_response_name, None)
         ]
-
-    def render(self, name, value, attrs=None, renderer=None):
-        if django.VERSION < (1, 11):
-            return mark_safe(render_to_string(
-                self.template_name,
-                self.get_context(name, value, attrs)
-            ))
-        else:
-            return super(ReCaptcha, self).render(
-                name, value, attrs=attrs, renderer=renderer
-            )
 
     def get_context(self, name, value, attrs):
 
