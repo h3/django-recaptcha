@@ -2,7 +2,6 @@ import json
 
 import django
 from django import forms
-from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
@@ -11,13 +10,7 @@ from .client import API_SERVER, WIDGET_TEMPLATE
 
 
 class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, 'NOCAPTCHA', False):
-        recaptcha_response_name = 'g-recaptcha-response'
-        recaptcha_challenge_name = 'g-recaptcha-response'
-    else:
-        recaptcha_challenge_name = 'recaptcha_challenge_field'
-        recaptcha_response_name = 'recaptcha_response_field'
-
+    recaptcha_response_name = 'g-recaptcha-response'
     template_name = WIDGET_TEMPLATE
 
     def __init__(self, public_key, *args, **kwargs):
@@ -26,7 +19,6 @@ class ReCaptcha(forms.widgets.Widget):
 
     def value_from_datadict(self, data, files, name):
         return [
-            data.get(self.recaptcha_challenge_name, None),
             data.get(self.recaptcha_response_name, None)
         ]
 
